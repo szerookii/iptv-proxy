@@ -34,8 +34,8 @@ type ItvChannel struct {
 	Cmd       string `json:"cmd"`
 	Logo      string `json:"logo"`
 	Cmds      []struct {
-		ID   string `json:"id"`    // Used for Proxy service to generate fake response to new URL request
-		ChId string `json:"ch_id"` // Used for Proxy service to generate fake response to new URL request
+		ID   string `json:"id"`
+		ChId string `json:"ch_id"`
 	} `json:"cmds"`
 }
 
@@ -70,7 +70,7 @@ func (c *Client) GenreChannels(genreId string) ([]*ItvChannel, error) {
 	return foundChannels, nil
 }
 
-func (c *Client) Genres() ([]*ItvGenre, error) {
+func (c *Client) ItvGenres() ([]*ItvGenre, error) {
 	bodyBytes, err := c.doRequest("/portal.php?", prepareURLValues("itv", "get_genres", nil))
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (c *Client) Genres() ([]*ItvGenre, error) {
 		return nil, err
 	}
 
-	genres.Data = append(genres.Data[:0], genres.Data[1:]...) // remove "All" genre because it's not a real genre bro it's a placeholder for all channels when no genre is selected
+	//genres.Data = append(genres.Data[:0], genres.Data[1:]...) // remove "All" genre because it's not a real genre bro it's a placeholder for all channels when no genre is selected
 
 	return genres.Data, nil
 }
@@ -100,8 +100,8 @@ func (c *Client) Channels() ([]*ItvChannel, error) {
 	return channels.Data.Data, nil
 }
 
-func (c *Client) CreateLink(cmd string) (string, error) {
-	bodyBytes, err := c.doRequest("/portal.php?", prepareURLValues("itv", "create_link", map[string]string{
+func (c *Client) CreateLink(t string, cmd string) (string, error) {
+	bodyBytes, err := c.doRequest("/portal.php?", prepareURLValues(t, "create_link", map[string]string{
 		"cmd": cmd,
 		"mac": c.macAddress,
 	}))

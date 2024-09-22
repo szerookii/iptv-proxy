@@ -20,7 +20,7 @@ func Init() *fiber.App {
 
 	// Xtream Codes API
 	app.Get("/player_api.php", xtream.PlayerAPI)
-	app.Get("/live/:username/:password/:stream", xtream.Live)
+	app.Get("/:type/:username/:password/:stream", xtream.Media)
 
 	return app
 }
