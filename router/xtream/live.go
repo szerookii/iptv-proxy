@@ -36,7 +36,7 @@ func Live(c fiber.Ctx) error {
 	switch remote := config.Get().Remote.Data.(type) {
 	case *config.StbRemote:
 		channelIdStr := strings.Split(streamId, ".")[0]
-		client, err := stb.NewClient(remote.URL, remote.MacAddress)
+		stbC, err := stb.NewClient(remote.URL, remote.MacAddress)
 		if err != nil {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
@@ -47,14 +47,14 @@ func Live(c fiber.Ctx) error {
 		}
 
 		genreId, channelId := utils.SplitNumbers(channelIdMerged)
-		channels, err := client.GenreChannels(fmt.Sprintf("%d", genreId))
+		channels, err := stbC.GenreChannels(fmt.Sprintf("%d", genreId))
 		if err != nil {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 
 		for _, channel := range channels {
 			if channel.Id == fmt.Sprintf("%d", channelId) {
-				link, err := client.CreateLink("itv", channel.Cmd)
+				link, err := stbC.CreateLink("itv", channel.Cmd)
 				if err != nil {
 					return c.SendStatus(fiber.StatusInternalServerError)
 				}
@@ -77,7 +77,7 @@ func Movie(c fiber.Ctx) error {
 	switch remote := config.Get().Remote.Data.(type) {
 	case *config.StbRemote:
 		streamIdStr := strings.Split(streamId, ".")[0]
-		client, err := stb.NewClient(remote.URL, remote.MacAddress)
+		stbC, err := stb.NewClient(remote.URL, remote.MacAddress)
 		if err != nil {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
@@ -88,9 +88,8 @@ func Movie(c fiber.Ctx) error {
 		}
 
 		categoryId, vodId := utils.SplitNumbers(streamIdMerged)
-		vods, err := client.CategoryVods(fmt.Sprintf("%d", categoryId))
+		vods, err := stbC.CategoryVods(fmt.Sprintf("%d", categoryId))
 		if err != nil {
-			fmt.Println(err)
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 
@@ -98,9 +97,8 @@ func Movie(c fiber.Ctx) error {
 
 		for _, vod := range vods {
 			if vod.Id == vodIdStr {
-				link, err := client.CreateLink("vod", vod.Cmd)
+				link, err := stbC.CreateLink("vod", vod.Cmd)
 				if err != nil {
-					fmt.Println(err)
 					return c.SendStatus(fiber.StatusInternalServerError)
 				}
 

@@ -32,15 +32,13 @@ func PlayerAPI(c fiber.Ctx) error {
 
 		switch remote := config.Get().Remote.Data.(type) {
 		case *config.StbRemote:
-			stb, err := stb.NewClient(remote.URL, remote.MacAddress)
+			stbC, err := stb.NewClient(remote.URL, remote.MacAddress)
 			if err != nil {
-				fmt.Println(err)
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
 
-			mainInfo, err := stb.MainInfo()
+			mainInfo, err := stbC.MainInfo()
 			if err != nil {
-				fmt.Println(err)
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
 
@@ -82,12 +80,12 @@ func PlayerAPI(c fiber.Ctx) error {
 
 		switch remote := config.Get().Remote.Data.(type) {
 		case *config.StbRemote:
-			stb, err := stb.NewClient(remote.URL, remote.MacAddress)
+			stbC, err := stb.NewClient(remote.URL, remote.MacAddress)
 			if err != nil {
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
 
-			genres, err := stb.ItvGenres()
+			genres, err := stbC.ItvGenres()
 			if err != nil {
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
@@ -168,12 +166,12 @@ func PlayerAPI(c fiber.Ctx) error {
 
 		switch remote := config.Get().Remote.Data.(type) {
 		case *config.StbRemote:
-			stb, err := stb.NewClient(remote.URL, remote.MacAddress)
+			stbC, err := stb.NewClient(remote.URL, remote.MacAddress)
 			if err != nil {
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
 
-			categories, err := stb.VodCategories()
+			categories, err := stbC.VodCategories()
 			if err != nil {
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
