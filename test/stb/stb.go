@@ -6,22 +6,15 @@ import (
 )
 
 func main() {
-	c, err := stb.NewClient("", "")
+	c, err := stb.NewClient("http://ns31617126.ip-162-19-37.eu:8080/c", "00:1A:79:A8:D6:73")
 	if err != nil {
 		panic(err)
 	}
 
-	mainInfo, err := c.MainInfo()
+	username, pass, err := c.ConvertToXtream()
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("MAC: %s\nSubscription ends on: %s\n", mainInfo.Mac, mainInfo.Phone)
-
-	link, err := c.CreateLink("ffmpeg http:\\/\\/localhost\\/ch\\/403102_")
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Link: %s\n", link)
+	fmt.Printf("Username: %s\nPassword %s\n", username, pass)
 }

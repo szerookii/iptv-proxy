@@ -25,6 +25,9 @@ func Media(c fiber.Ctx) error {
 
 	case "movie":
 		return Movie(c)
+
+	case "series":
+		return Series(c)
 	}
 
 	return c.SendStatus(fiber.StatusNotFound)
@@ -112,4 +115,10 @@ func Movie(c fiber.Ctx) error {
 	}
 
 	return c.SendStatus(fiber.StatusNotFound)
+}
+
+func Series(c fiber.Ctx) error {
+	// TODO: Implement Series
+
+	return nil
 }

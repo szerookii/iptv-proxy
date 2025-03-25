@@ -103,7 +103,8 @@ func PlayerAPI(c fiber.Ctx) error {
 				})
 			}
 
-			// TODO: Implement XtreamRemote
+		case *config.XtreamRemote:
+
 		}
 
 		return c.JSON(liveCategories)
