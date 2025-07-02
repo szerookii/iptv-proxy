@@ -14,6 +14,12 @@ func Init() *fiber.App {
 	app := fiber.New(fiber.Config{
 		JSONEncoder: sonic.Marshal,
 		JSONDecoder: sonic.Unmarshal,
+		ErrorHandler: func(c fiber.Ctx, err error) error {
+			log.Error().Err(err).Msgf("Error: %s", err.Error())
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		},
 	})
 
 	app.Use(middleware.LogsMiddleware)

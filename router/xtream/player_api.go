@@ -82,12 +82,12 @@ func PlayerAPI(c fiber.Ctx) error {
 		case *config.StbRemote:
 			stbC, err := stb.NewClient(remote.URL, remote.MacAddress)
 			if err != nil {
-				return c.SendStatus(fiber.StatusInternalServerError)
+				return err
 			}
 
 			genres, err := stbC.ItvGenres()
 			if err != nil {
-				return c.SendStatus(fiber.StatusInternalServerError)
+				return err
 			}
 
 			for _, genre := range genres {
